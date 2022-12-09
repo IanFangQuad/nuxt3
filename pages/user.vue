@@ -1,11 +1,17 @@
 <template>
-  <NuxtLayout name="custom">
-    <div>
-      <h1>user info</h1>
-      <p>name:{{ userStore.info.name }}</p>
-      <p>email:{{ userStore.info.email }}</p>
-      <p>avatar:{{ userStore.info.avatar }}</p>
-    </div>
+  <NuxtLayout name="default">
+    <template #header>
+      <Header title="User" />
+    </template>
+    <template #content>
+      <div class="container mx-auto">
+        <div>
+          <p>name:{{ userStore.info.name }}</p>
+          <p>email:{{ userStore.info.email }}</p>
+          <!-- <p>avatar:{{ userStore.info.avatar }}</p> -->
+        </div>
+      </div>
+    </template>
   </NuxtLayout>
 </template>
 
@@ -28,7 +34,7 @@ if (Object.keys(userStore.info).length === 0) {
 
   const { data: userInfo, error } = await getInfo();
 
-  if(error.value){
+  if (error.value) {
     navigateTo("/")
   }
 

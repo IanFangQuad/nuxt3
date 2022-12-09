@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 const runtimeConfig = useRuntimeConfig()
 
 export default defineEventHandler(async (event) => {
+
     const body = await readBody(event)
     const oauth2Client = new OAuth2Client()
     oauth2Client.setCredentials({ access_token: body.accessToken })
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
             statusMessage: 'Invalid token'
         })
     }
-
+    // ------------改ＰＨＰ生成
     const jwtTokenPayload = {
         id: userInfo.sub,
         name: userInfo.name,
@@ -41,7 +42,7 @@ export default defineEventHandler(async (event) => {
         },
         runtimeConfig.jwtSignSecret
     )
-
+    // ------------改ＰＨＰ生成
     setCookie(event, 'access_token', jwtToken, {
         httpOnly: true,
         maxAge,
