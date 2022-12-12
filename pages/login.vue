@@ -9,6 +9,7 @@
                     <div class="w-100% flex justify-center my-3">
                         <ClientOnly>
                             <CustomGoogleLoginBtn></CustomGoogleLoginBtn>
+                            <template #fallback><div>Loading...</div></template>
                         </ClientOnly>
                     </div>
                     <div class="w-100% text-center mb-3 mt-6">
@@ -85,18 +86,14 @@ const handleLogin = async () => {
         initialCache: false,
     });
 
-    console.log(data)
-    console.log(error)
-
-    // if (error.value) {
-    //     modalOptions.title = 'warning';
-    //     modalOptions.content = error.value.data.message;
-    //     set(modalOptions);
-    //     toggle();
-    //     return;
-    // }
-
-    return
+    if (error.value) {
+        modalOptions.title = 'warning';
+        modalOptions.content = error.value.data.message;
+        set(modalOptions);
+        toggle();
+        return;
+    }
+    
     navigateTo("/");
 }
 </script>
