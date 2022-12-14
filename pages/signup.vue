@@ -76,8 +76,8 @@ const handleSignup = async () => {
         return;
     }
 
-    modalOptions.content = data.value.msg;
-    modalOptions.secondary_btn_text = 'ok';
+    modalOptions.content = data.value.message;
+    modalOptions.secondary_btn_text = '  ok  ';
     modalOptions.secondaryBtnHandler =  () => {
         toggle();
         navigateTo("/login");

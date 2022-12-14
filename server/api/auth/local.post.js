@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
 
     try {
 
-        const { token, msg } = await getToken();
+        const response = await getToken();
+        const { token, message } = response;
 
         const maxAge = 60 * 60 * 24 * 1
         const expires = Math.floor(Date.now() / 1000) + maxAge
@@ -29,7 +30,7 @@ export default defineEventHandler(async (event) => {
             path: '/'
         })
 
-        return msg;
+        return message;
 
     } catch (error) {
         console.log(error)

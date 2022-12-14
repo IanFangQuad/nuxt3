@@ -21,12 +21,12 @@ import { useUserStore } from "@/stores/user";
 import { useModalStore } from "@/stores/modal";
 
 const modalStore = useModalStore();
-const { toggle, set } = modalStore; // action 可以直接解構
+const { update, toggle, set } = modalStore; // action 可以直接解構
 
 const modalOptions = reactive({
   title: 'system message',
   content: 'please login.',
-  primary_btn_text: 'ok',
+  primary_btn_text: '  ok  ',
   primary_btn_show: true,
   secondary_btn_show: false,
   primaryBtnHandler: () => {
@@ -48,16 +48,16 @@ if (Object.keys(userStore.info).length === 0) {
     });
 
     if (error.value) {
-      userStore.update({});
       set(modalOptions);
-      toggle();
+      update(true); // toggle 目前會有生命週期問題
       return;
     }
 
     userStore.update(data.value);
 
   })();
-
 }
+// const { whoami } = useWhoami();
+// whoami();
 </script>
 
