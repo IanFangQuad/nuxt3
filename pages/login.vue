@@ -7,18 +7,7 @@
             <div class="container mx-auto">
                 <div class="w-100%">
                     <div class="w-100% flex justify-center my-3">
-                        <ClientOnly>
-                            <CustomGoogleLoginBtn></CustomGoogleLoginBtn>
-                            <template #fallback>
-                                <button
-                                    class="bg-blue-5 w-100% h-44px shadow b-rounded flex items-center max-w-md cursor-pointer b-none my-3 mt-5"
-                                    type="button" hover="shadow-blue bg-op-90">
-                                    <div class="flex items-center justify-center flex-grow">
-                                        <p class="text-white mx-2"><b>Loading...</b></p>
-                                    </div>
-                                </button>
-                            </template>
-                        </ClientOnly>
+                        <CustomGoogleLoginBtn></CustomGoogleLoginBtn>
                     </div>
                     <div class="w-100% text-center mb-3 mt-6">
                         <div class="inline-block border-t v-mid w-20%"></div>
