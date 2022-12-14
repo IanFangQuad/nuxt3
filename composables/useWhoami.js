@@ -1,14 +1,14 @@
-//this is testing func
+
 import { useUserStore } from "@/stores/user";
 import { useModalStore } from "@/stores/modal";
 
 export default function () {
 
+    const userStore = useUserStore();
+    const modalStore = useModalStore();
+
     const whoami = async () => {
 
-        const userStore = useUserStore();
-
-        const modalStore = useModalStore();
         const { update, toggle, set } = modalStore; // action 可以直接解構
 
         const modalOptions = reactive({
@@ -47,5 +47,7 @@ export default function () {
 
     return {
         whoami,
+        userStore,
+        modalStore,
     }
 }
