@@ -19,8 +19,5 @@
 <script setup>
 const { whoami, userStore, modalStore } = useWhoami();
 whoami();
-onMounted(() => {
-  console.log('mounted')
-})
 </script>
 

@@ -8,8 +8,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@iconify-json/mdi": "^1.1.37",
     "@pinia/nuxt": "^0.4.6",
     "@unocss/nuxt": "^0.46.5",
+    "@unocss/preset-icons": "^0.47.6",
     "google-auth-library": "^8.7.0",
     "nuxt": "3.0.0",
     "pinia": "^2.0.27",

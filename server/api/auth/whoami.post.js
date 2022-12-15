@@ -3,6 +3,13 @@ export default defineEventHandler(async (event) => {
 
     const token = getCookie(event, 'access_token');
 
+    if (!token) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized'
+        })
+    }
+
     const getUserInfo = async () => {
 
         const response = await $fetch("http://webapp/api/auth/whoami", {
