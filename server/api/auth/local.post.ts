@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const getToken = async () => {
 
         // server to server 時，domain 用 docker-compose.yml 裡的 <appname>
-        const response = await $fetch("http://webapp/api/auth/login", {
+        const response: ApiResponse = await $fetch("http://webapp/api/auth/login", {
             method: "POST",
             body: body,
         });
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         const maxAge = 60 * 60 * 24 * 1
         const expires = Math.floor(Date.now() / 1000) + maxAge
 
-        setCookie(event, 'access_token', token, {
+        setCookie(event, 'access_token', token!, {
             httpOnly: true,
             maxAge,
             expires: new Date(expires * 1000),

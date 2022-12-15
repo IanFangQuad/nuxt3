@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
     const getUserInfo = async () => {
 
-        const response = await $fetch("http://webapp/api/auth/whoami", {
+        const response: ApiResponse = await $fetch("http://webapp/api/auth/whoami", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         const response = await getUserInfo();
-        return response;
+        return response.userinfo;
 
     } catch (e) {
         throw createError({

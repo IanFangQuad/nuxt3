@@ -29,9 +29,9 @@ export default function () {
 
                 const { data, error } = await useFetch("/api/auth/whoami", {
                     method: "POST",
-                    initialCache: false,
-                    headers: useRequestHeaders(['cookie']),
-                });
+                    // initialCache: false, v3.0.0-rc.14 remove this option
+                    headers: useRequestHeaders(['cookie']) as Record<string, string>,
+                } );
 
                 if (error.value) {
                     set(modalOptions);

@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
             url: 'https://www.googleapis.com/oauth2/v3/userinfo'
         })
         .then((response) => response.data)
-        .catch(() => null)
+        .catch(() => null) as UserInfo
 
     oauth2Client.revokeCredentials()
 
@@ -25,15 +25,15 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const formData = {
-        email: userInfo.email,
-        third_party_id: userInfo.sub,
+    const formData: UserInfo = {
+        email: userInfo.email!,
+        third_party_id: userInfo.sub!,
         third_party: 'google',
     };
 
     const getToken = async () => {
 
-        const response = await $fetch("http://webapp/api/auth/login", {
+        const response: ApiResponse = await $fetch("http://webapp/api/auth/login", {
             method: "POST",
             body: formData,
             onResponse({ response }) {
@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
     try {
 
         const { token, message } = await getToken();
-        access_token = token;
+        access_token = token!;
         console.log(message)
 
         // 回應空 token 為資料庫找不到資料，表示第一次使用第三方登入，先幫他創會員再取一次
@@ -64,11 +64,10 @@ export default defineEventHandler(async (event) => {
                 const { message } = await $fetch("http://webapp/api/user", {
                     method: "POST",
                     body: formData,
-                    initialCache: false,
                     headers: {
                         Accept: 'application/json', // laravel will return msg instead of redirect
                     },
-                });
+                }) as ApiResponse;
 
                 if (message !== 'register success') {
                     return false;
@@ -87,7 +86,7 @@ export default defineEventHandler(async (event) => {
             }
 
             const { token, message } = await getToken();
-            access_token = token;
+            access_token = token!;
             console.log(message)
         }
     } catch (error) {

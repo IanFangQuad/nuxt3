@@ -1,13 +1,10 @@
-interface Response {
-    message: string;
-}
 
 export default defineEventHandler(async (event) => {
     const token = getCookie(event, "access_token");
 
     const logout = async () => {
 
-        const response: Response = await $fetch("http://webapp/api/auth/logout", {
+        const response: ApiResponse = await $fetch("http://webapp/api/auth/logout", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
