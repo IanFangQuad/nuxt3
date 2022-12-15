@@ -13,7 +13,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 
 const props = defineProps({
@@ -29,8 +29,7 @@ const handleLogout = async () => {
 
   const { data, error } = await useFetch("/api/auth/logout", {
     method: "POST",
-    initialCache: false,
-    headers: useRequestHeaders(['cookie']),
+    headers: useRequestHeaders(['cookie']) as Record<string, string>,
   });
 
   if (error.value) {

@@ -52,7 +52,7 @@
     </ClientOnly>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useModalStore } from "@/stores/modal";
 import { storeToRefs } from 'pinia'
 

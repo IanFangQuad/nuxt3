@@ -21,7 +21,7 @@
     </ClientOnly>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { googleTokenLogin } from 'vue3-google-login'
 import { useUserStore } from "@/stores/user";
 
@@ -44,7 +44,6 @@ const handleGoogleLogin = async () => {
         body: {
             accessToken,
         },
-        initialCache: false,
     });
 
     userStore.update(data.value);
