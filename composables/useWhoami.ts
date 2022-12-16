@@ -1,6 +1,6 @@
 
-import { useUserStore } from "@/stores/user";
-import { useModalStore } from "@/stores/modal";
+import { useUserStore } from "~~/stores/user";
+import { useModalStore } from "~~/stores/modal";
 
 export default function () {
 
@@ -39,7 +39,7 @@ export default function () {
                     return;
                 }
 
-                userStore.update(data.value);
+                userStore.update(data.value!);
 
             })();
         }

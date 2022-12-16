@@ -16,7 +16,7 @@
   <Modal />
 </template>
 
-<script setup>
+<script setup lang="ts">
 const { whoami, userStore, modalStore } = useWhoami();
 whoami();
 </script>

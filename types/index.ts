@@ -3,7 +3,7 @@ export { };
 declare global {
 
     interface UserInfo {
-        email: string;
+        email?: string;
         name?: string;
         sub?: string;
         avatar?: string;
@@ -16,6 +16,20 @@ declare global {
         message: string,
         token?: string,
         userinfo?: UserInfo,
+    }
+
+    interface ModalOptions {
+        title?: string,
+        content?: string,
+        primary_btn_text?: string,
+        primary_btn_show?: boolean,
+        primaryBtnHandler?: Function,
+        secondary_btn_text?: string,
+        secondary_btn_show?: boolean,
+        secondaryBtnHandler?: Function,
+        danger_btn_text?: string,
+        danger_btn_show?: boolean,
+        dangerBtnHandler?: Function,
     }
 
 }

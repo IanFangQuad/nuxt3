@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        info: {}
+        info: {} as UserInfo
     }),
     actions: {
-        update(value) {
+        update(value: UserInfo) {
             Object.assign(this.info, value);
         }
     },

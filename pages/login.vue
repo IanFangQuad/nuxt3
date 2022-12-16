@@ -54,15 +54,15 @@
     <Modal />
 </template>
 
-<script setup>
-import { useModalStore } from "@/stores/modal";
+<script setup lang="ts">
+import { useModalStore } from "~~/stores/modal";
 import { storeToRefs } from 'pinia'
 
 const modalStore = useModalStore();
 const { show, options } = storeToRefs(modalStore); // state 直接解構會沒關聯性
 const { toggle, set } = modalStore; // action 可以直接解構
 
-const modalOptions = reactive({
+const modalOptions: ModalOptions = reactive({
     title: 'system message',
     secondary_btn_text: 'close',
     secondary_btn_show: true,
@@ -80,7 +80,6 @@ const handleLogin = async () => {
     const { data, error } = await useFetch("/api/auth/local", {
         method: "POST",
         body: toRaw(formData),
-        initialCache: false,
     });
 
     if (error.value) {

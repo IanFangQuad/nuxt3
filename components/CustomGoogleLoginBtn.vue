@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { googleTokenLogin } from 'vue3-google-login'
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
 
@@ -46,7 +46,7 @@ const handleGoogleLogin = async () => {
         },
     });
 
-    userStore.update(data.value);
+    userStore.update(data.value!);
     navigateTo("/user")
 }
 </script>
