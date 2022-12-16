@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between items-center mt-0">
-    <h2 class="h2 flex items-center mx-2">{{ props.title }}</h2>
+    <h2 class="h3 flex items-center mx-6">{{ props.title }}</h2>
 
     <button class="bg-amber-5 h-44px shadow b-rounded items-center cursor-pointer b-none p-0" type="button"
       hover="shadow-amber bg-op-90" :class="{ 'hidden': hidden, 'flex': !hidden }" @click="handleLogout">

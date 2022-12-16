@@ -49,6 +49,9 @@
                     </div>
                 </div>
             </div>
+            <div v-bind:class="[loading ? 'block' : 'hidden',]">
+                <Loading></Loading>
+            </div>
         </template>
     </NuxtLayout>
     <Modal />
@@ -74,6 +77,8 @@ const formData = reactive({
     email: '',
     password: '',
 })
+
+const loading = ref(false);
 
 const handleLogin = async () => {
 

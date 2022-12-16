@@ -2,6 +2,7 @@
     <NuxtLayout name="default">
         <template #header>
             <Header title="Index" />
+            <Sider />
         </template>
         <template #content>
         </template>
