@@ -1,7 +1,9 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <Header title="User" />
+      <Header title="User">
+        <LogoutBtn />
+      </Header>
     </template>
     <template #content>
       <div class="container mx-auto">
@@ -18,7 +20,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-    middleware: ['auth'],
+  middleware: ['auth'],
 })
 const { userStore, modalStore } = useWhoami();
 </script>

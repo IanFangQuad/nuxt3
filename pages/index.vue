@@ -1,8 +1,9 @@
 <template>
     <NuxtLayout name="default">
         <template #header>
-            <Header title="Index" />
-            <Sider />
+            <Header title="Index">
+                <LogoutBtn />
+            </Header>
         </template>
         <template #content>
         </template>
