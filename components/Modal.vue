@@ -43,7 +43,7 @@
             </div>
         </div>
         <template #fallback>
-            <Loading></Loading>
+            <Loading :show="true"></Loading>
         </template>
     </ClientOnly>
 </template>

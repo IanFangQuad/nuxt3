@@ -49,12 +49,10 @@
                     </div>
                 </div>
             </div>
-            <div v-bind:class="[loading ? 'block' : 'hidden',]">
-                <Loading></Loading>
-            </div>
         </template>
     </NuxtLayout>
     <Modal />
+    <Loading :show="loading"></Loading>
 </template>
 
 <script setup lang="ts">
@@ -82,10 +80,14 @@ const loading = ref(false);
 
 const handleLogin = async () => {
 
+    loading.value = true;
+    
     const { data, error } = await useFetch("/api/auth/local", {
         method: "POST",
         body: toRaw(formData),
     });
+
+    loading.value = false;
 
     if (error.value) {
         modalOptions.title = 'warning';

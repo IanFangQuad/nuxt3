@@ -19,6 +19,7 @@
             </button>
         </template>
     </ClientOnly>
+    <Loading :show="loading"></Loading>
 </template>
 
 <script setup lang="ts">
@@ -29,6 +30,7 @@ const userStore = useUserStore();
 
 const runtimeConfig = useRuntimeConfig()
 const { googleClientId: GOOGLE_CLIENT_ID } = runtimeConfig.public
+const loading = ref(false);
 
 const handleGoogleLogin = async () => {
     const { access_token: accessToken } = await googleTokenLogin({
@@ -39,6 +41,8 @@ const handleGoogleLogin = async () => {
         return "登入失敗";
     }
 
+    loading.value = true;
+
     const { data } = await useFetch("/api/auth/google", {
         method: "POST",
         body: {
@@ -47,6 +51,6 @@ const handleGoogleLogin = async () => {
     });
 
     userStore.update(data.value!);
-    navigateTo("/user")
+    navigateTo("/user");
 }
 </script>

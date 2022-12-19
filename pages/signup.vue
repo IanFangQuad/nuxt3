@@ -35,6 +35,7 @@
         </template>
     </NuxtLayout>
     <Modal />
+    <Loading :show="loading"></Loading>
 </template>
 
 <script setup lang="ts">
@@ -60,11 +61,18 @@ const formData = reactive({
     password_confirmation: '',
 })
 
+const loading = ref(false);
+
 const handleSignup = async () => {
+
+    loading.value = true;
+
     const { data: { value }, error } = await useFetch<ApiResponse>("http://localhost/api/user", {
         method: "POST",
         body: toRaw(formData),
     });
+
+    loading.value = false;
 
     if (error.value) {
         modalOptions.title = 'warning';
@@ -79,8 +87,8 @@ const handleSignup = async () => {
     modalOptions.secondaryBtnHandler = () => {
         toggle();
         navigateTo("/login");
-    },
-        set(modalOptions);
+    };
+    set(modalOptions);
     toggle();
 }
 </script>

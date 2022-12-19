@@ -10,7 +10,7 @@
       </div>
     </button>
   </div>
-
+  <Loading :show="loading"></Loading>
 </template>
 
 <script setup lang="ts">
@@ -21,16 +21,23 @@ const props = defineProps({
 })
 
 const route = useRoute();
-const hidden = (route.name === "login");
+const except = ['login', 'signup'];
+const hidden = (except.includes(route.name as string));
 
 const userStore = useUserStore();
 
+const loading = ref(false);
+
 const handleLogout = async () => {
+
+  loading.value = true;
 
   const { data, error } = await useFetch("/api/auth/logout", {
     method: "POST",
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
   });
+
+  loading.value = false;
 
   if (error.value) {
     console.log(error.value)

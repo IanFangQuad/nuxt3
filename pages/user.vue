@@ -17,7 +17,9 @@
 </template>
 
 <script setup lang="ts">
-const { whoami, userStore, modalStore } = useWhoami();
-whoami();
+definePageMeta({
+    middleware: ['auth'],
+})
+const { userStore, modalStore } = useWhoami();
 </script>
 
