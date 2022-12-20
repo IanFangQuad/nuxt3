@@ -1,7 +1,7 @@
 <template>
-  <button class="bg-amber-5 h-44px shadow b-rounded items-center cursor-pointer b-none p-0 flex" type="button"
+  <button class="bg-amber-5 h-35px shadow b-rounded items-center cursor-pointer b-none p-0 flex m-2" type="button"
     hover="shadow-amber bg-op-90" @click="handleLogout">
-    <div class="flex items-center justify-center flex-grow px-2">
+    <div class="flex items-center justify-center flex-grow px-1">
       <div class="i-mdi-logout-variant text-2xl text-white" />
       <p class="text-white mx-1"><b>logout</b></p>
     </div>
