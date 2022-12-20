@@ -28,12 +28,13 @@
                     <div class="flex justify-center my-2rem">
                         <button
                             class="bg-indigo-5 w-100% h-5rem shadow b-rounded flex items-center max-w-md cursor-pointer b-none my-3 mt-5"
-                            type="button" hover="shadow-indigo bg-op-90" @click="">
+                            type="button" hover="shadow-indigo bg-op-90" @click="handlePunch">
                             <div class="flex items-center justify-center flex-grow">
                                 <p class="text-white mx-2 text-1.75rem"><b>Punch</b></p>
                             </div>
                         </button>
                     </div>
+                    <Loading :show="loading" />
                 </div>
             </div>
             <div class="">
@@ -74,6 +75,8 @@
 </template>
 
 <script setup lang="ts">
+import { useModalStore } from "~~/stores/modal";
+
 definePageMeta({
     middleware: ['auth'],
 })
@@ -100,7 +103,7 @@ const showTime = () => {
 showTime();
 
 // fetch today's record and render
-const { data: { value: data }, error } = await useFetch("/api/attend", {
+const { data, error, refresh } = await useFetch("/api/attend", {
     method: "POST",
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
 });
@@ -112,13 +115,60 @@ const endTime = ref('not punch yet !');
 const startStatus = ref('');
 const endStatus = ref('');
 
-if (data) {
+if (data.value) {
     showTableCell.value = true;
     tableSpan.value = 1;
-    startTime.value = data.start_time ? data.start_time : 'not punch yet !';
-    endTime.value = data.end_time ? data.end_time : 'not punch yet !';
-    startStatus.value = data.status.start_time ? data.status.start_time : '';
-    endStatus.value = data.status.end_time ? data.status.end_time : '';
+    startTime.value = data.value.start_time ? data.value.start_time : 'not punch yet !';
+    endTime.value = data.value.end_time ? data.value.end_time : 'not punch yet !';
+    startStatus.value = data.value.status.start_time ? data.value.status.start_time : '';
+    endStatus.value = data.value.status.end_time ? data.value.status.end_time : '';
+}
+
+// punch card
+const loading = ref(false);
+
+const modalStore = useModalStore();
+const { toggle, set } = modalStore;
+
+const modalOptions: ModalOptions = reactive({
+    title: 'warning',
+    secondary_btn_text: 'close',
+    secondary_btn_show: true,
+    primary_btn_show: false,
+    secondaryBtnHandler: () => { toggle() },
+})
+
+const handlePunch = async () => {
+
+    loading.value = true;
+
+    const action = data.value ? 'out' : 'in';
+    const id = data.value ? data.value.id : 0;
+
+    const { data: response, error } = await useFetch(`/api/attend/punch/${action}`, {
+        method: "POST",
+        headers: useRequestHeaders(['cookie']) as Record<string, string>,
+        body: { id: id },
+    });
+
+    loading.value = false;
+    
+    if (error.value) {
+        modalOptions.content = error.value.data.message;
+        set(modalOptions);
+        toggle();
+        return;
+    }
+
+    await refresh();
+    if (data.value) {
+        showTableCell.value = true;
+        tableSpan.value = 1;
+        startTime.value = data.value.start_time ? data.value.start_time : 'not punch yet !';
+        endTime.value = data.value.end_time ? data.value.end_time : 'not punch yet !';
+        startStatus.value = data.value.status.start_time ? data.value.status.start_time : '';
+        endStatus.value = data.value.status.end_time ? data.value.status.end_time : '';
+    }
 }
 
 </script>

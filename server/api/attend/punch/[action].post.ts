@@ -10,10 +10,14 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const getRecord = async () => {
+    const body = await readBody(event);
+    const id = body.id;
+    const url = event.context.params.action == 'in' ? 'http://webapp/api/attend/store' : `http://webapp/api/attend/${id}`;
+    const method = event.context.params.action == 'in' ? 'POST' : 'PATCH';
+    const punch = async () => {
 
-        const response: any = await $fetch("http://webapp/api/attend", {
-            method: "POST",
+        const response: any = await $fetch(url, {
+            method: method,
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: 'application/json', // laravel will return msg instead of redirect
@@ -24,12 +28,12 @@ export default defineEventHandler(async (event) => {
     };
 
     try {
-        const response = await getRecord();
-        // console.log(response)
+        const response = await punch();
+        console.log(response)
         return response;
 
     } catch (e) {
-        
+
         deleteCookie(event, "access_token");
 
         throw createError({
