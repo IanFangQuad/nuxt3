@@ -108,6 +108,10 @@ const { data, error, refresh } = await useFetch("/api/attend", {
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
 });
 
+if(error.value){
+    navigateTo('/login');
+}
+
 const showTableCell = ref(false);
 const tableSpan = ref(2);
 const startTime = ref('not punch yet !');

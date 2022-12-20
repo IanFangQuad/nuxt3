@@ -61,6 +61,10 @@ const { data, error } = await useFetch("/api/attend/list", {
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
 });
 
+if(error.value){
+    navigateTo('/login');
+}
+
 const hasRecord = Object.keys(data.value).length === 0 ? ref(false) : ref(true);
 // console.log(data)
 
@@ -84,7 +88,7 @@ const handlePage = async (action: string) => {
     loading.value = false;
 
     if (error.value) {
-        return;
+        navigateTo('/login');
     }
     
     data.value = response.value;

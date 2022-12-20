@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
     }
 
     const query = await getQuery(event);
-    console.log(query)
 
     const getRecord = async () => {
 
@@ -29,7 +28,6 @@ export default defineEventHandler(async (event) => {
 
     try {
         const response = await getRecord();
-        // console.log(response)
         return response;
 
     } catch (e) {

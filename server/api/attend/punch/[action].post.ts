@@ -29,7 +29,6 @@ export default defineEventHandler(async (event) => {
 
     try {
         const response = await punch();
-        console.log(response)
         return response;
 
     } catch (e) {
