@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@unocss/nuxt", "@pinia/nuxt"],
+  modules: ["@unocss/nuxt", "@pinia/nuxt", "@nathanchase/nuxt-dayjs-module"],
   typescript: {
     typeCheck: true,
   },

@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     const getToken = async () => {
 
-        const response: ApiResponse = await $fetch("http://webapp/api/auth/login", {
+        const response: AuthResponse = await $fetch("http://webapp/api/auth/login", {
             method: "POST",
             body: formData,
             onResponse({ response }) {
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
                     headers: {
                         Accept: 'application/json', // laravel will return msg instead of redirect
                     },
-                }) as ApiResponse;
+                }) as AuthResponse;
 
                 if (message !== 'register success') {
                     return false;

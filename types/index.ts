@@ -12,11 +12,13 @@ declare global {
         id?: bigint;
     }
 
-    interface ApiResponse {
+    interface AuthResponse {
         message: string,
         token?: string,
         userinfo?: UserInfo,
     }
+
+    interface AttendResponse {} 
 
     interface ModalOptions {
         title?: string,

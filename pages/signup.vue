@@ -67,7 +67,7 @@ const handleSignup = async () => {
 
     loading.value = true;
 
-    const { data: { value }, error } = await useFetch<ApiResponse>("http://localhost/api/user", {
+    const { data: { value }, error } = await useFetch<AuthResponse>("http://localhost/api/user", {
         method: "POST",
         body: toRaw(formData),
     });

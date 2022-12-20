@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 
     const logout = async () => {
 
-        const response: ApiResponse = await $fetch("http://webapp/api/auth/logout", {
+        const response: AuthResponse = await $fetch("http://webapp/api/auth/logout", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,

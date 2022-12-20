@@ -4,6 +4,7 @@
       <Header title="User">
         <LogoutBtn />
       </Header>
+      <Sider />
     </template>
     <template #content>
       <div class="container mx-auto">

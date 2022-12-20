@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const getToken = async () => {
 
         // server to server 時，domain 用 docker-compose.yml 裡的 <appname>
-        const response: ApiResponse = await $fetch("http://webapp/api/auth/login", {
+        const response: AuthResponse = await $fetch("http://webapp/api/auth/login", {
             method: "POST",
             body: body,
         });

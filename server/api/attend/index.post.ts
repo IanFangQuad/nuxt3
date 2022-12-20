@@ -10,9 +10,9 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const getUserInfo = async () => {
+    const getRecord = async () => {
 
-        const response: AuthResponse = await $fetch("http://webapp/api/auth/whoami", {
+        const response: any = await $fetch("http://webapp/api/attend", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -24,11 +24,12 @@ export default defineEventHandler(async (event) => {
     };
 
     try {
-        const response = await getUserInfo();
-        return response.userinfo;
+        const response = await getRecord();
+        console.log(response)
+        return response;
 
     } catch (e) {
-
+        
         deleteCookie(event, "access_token");
 
         throw createError({
