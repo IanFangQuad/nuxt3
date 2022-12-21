@@ -10,8 +10,8 @@
 
     <div class="position-fixed border border-1 rounded h-100% flex flex-col py-5 px-3 text-dark sidebar-wrapper">
         <div class="border-b my-3">
-            <NuxtLink to="/" class="decoration-none text-dark flex items-center p-3">
-                <div class="i-mdi-apps-box text-2xl" />
+            <NuxtLink to="/user" class="decoration-none text-dark flex items-center p-3">
+                <div class="i-mdi-account-circle text-2xl" />
             </NuxtLink>
         </div>
         <div class="position-relative my-2">

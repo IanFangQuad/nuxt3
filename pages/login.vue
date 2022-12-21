@@ -97,6 +97,6 @@ const handleLogin = async () => {
         return;
     }
 
-    navigateTo("/user");
+    navigateTo("/");
 }
 </script>
