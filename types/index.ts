@@ -18,7 +18,7 @@ declare global {
         userinfo?: UserInfo,
     }
 
-    interface AttendResponse {} 
+    interface AttendResponse { }
 
     interface ModalOptions {
         title?: string,
@@ -32,6 +32,18 @@ declare global {
         danger_btn_text?: string,
         danger_btn_show?: boolean,
         dangerBtnHandler?: Function,
+    }
+
+    interface LeaveFormData {
+        id?: BigInteger,
+        member_id?: BigInteger,
+        member?: Object,
+        start?: string,
+        end?: string,
+        hours?: BigInteger,
+        type?: string,
+        date?: string,
+        description?: string,
     }
 
 }
