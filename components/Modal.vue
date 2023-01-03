@@ -1,10 +1,10 @@
 <template>
     <ClientOnly>
         <div id="modal-wrapper"
-            class="z-10 bg-dark-50 bg-op-40 w-100vw h-100vh position-absolute top-0 left-0 justify-center items-start"
+            class="z-10 bg-dark-50 bg-op-40 w-100vw h-120% position-absolute top-0 left-0 justify-center items-start"
             v-bind:class="show ? 'flex' : 'hidden'">
             <div id="modal"
-                class="z-15 max-w-md w-100% bg-white rounded mt-25vh px-1px flex flex-col items-center justify-start">
+                class="z-15 max-w-md w-100% bg-white rounded px-1px flex flex-col items-center justify-start position-fixed top-25vh">
                 <div class="w-100% border-b border-warmgray-200 py-2 flex items-center">
                     <span class="mx-3 text-2xl fw-400">
                         {{ options.title }}

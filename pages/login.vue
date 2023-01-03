@@ -87,9 +87,8 @@ const handleLogin = async () => {
         body: toRaw(formData),
     });
 
-    loading.value = false;
-
     if (error.value) {
+        loading.value = false;
         modalOptions.title = 'warning';
         modalOptions.content = error.value.data.message;
         set(modalOptions);

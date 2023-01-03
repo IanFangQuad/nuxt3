@@ -1,6 +1,6 @@
 <template>
     <div id=""
-        class="z-10 bg-dark-50 bg-op-40 w-100vw h-100vh position-absolute top-0 left-0 justify-center items-center"
+        class="z-10 bg-dark-50 bg-op-40 w-100vw h-120% position-absolute top-0 left-0 justify-center items-center"
         :class="{ flex: props.show, hidden: !props.show }">
         <div class="lds-spinner">
             <div></div>

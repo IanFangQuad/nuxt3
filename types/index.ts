@@ -35,15 +35,19 @@ declare global {
     }
 
     interface LeaveFormData {
-        id?: BigInteger,
-        member_id?: BigInteger,
-        member?: Object,
+        id?: number,
+        member_id?: number,
+        member?: UserInfo,
         start?: string,
         end?: string,
-        hours?: BigInteger,
+        hours?: number,
         type?: string,
         date?: string,
         description?: string,
+        approval?: number,
+        holidays?: { [key: string]: {
+            dayoff : number,
+        } },
     }
 
 }

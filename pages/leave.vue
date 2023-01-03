@@ -28,11 +28,10 @@
                     <div class="calendar-cell calendar-title">Saturday</div>
 
                     <div v-for="(day, index1) in data.dates" :key="index1"
-                        class="calendar-cell calendar-date fw-bold text-1.1rem" :class="[
-                            day.dayoff ? 'text-red-6' : 'text-dark-3',
-                            ($dayjs(day.date).format('MM') == now.format('MM')) ? 'hover:bg-lightblue-50' : 'grayscale-50 text-op-50 bg-light-1 hover:bg-light-4',
-                            ($dayjs(day.date).format('YYYY-MM-DD') == now.format('YYYY-MM-DD')) ? 'text-emerald-5 hover:bg-emerald-50' : '',
-                        ]">
+                        class="calendar-cell calendar-date fw-bold text-1.1rem" :class="[day.dayoff ? 'text-red-6' : 'text-dark-3',
+($dayjs(day.date).format('MM') == now.format('MM')) ? 'hover:bg-lightblue-50' : 'grayscale-50 text-op-50 bg-light-1 hover:bg-light-4',
+($dayjs(day.date).format('YYYY-MM-DD') == $dayjs(new Date()).format('YYYY-MM-DD')) ? 'text-emerald-5 hover:bg-emerald-50!' : '',
+]">
                         <div class="w-100% flex">
                             <div class="mx-1.5 my-0.75" :class="[]">
                                 {{ $dayjs(day.date).format('DD') }}</div>
@@ -52,7 +51,7 @@
                                     </div>
                                     <div class="p-0 ml-1">
                                         <span class="text-dark-1 text-0.4rem rounded bg-amber-3 px-1">
-                                            {{ event.type }}
+                                            {{ convertMap[event.type as keyof typeof convertMap] }}
                                         </span>
                                     </div>
                                 </div>
@@ -78,11 +77,11 @@
                         </div>
                         <div title="add"
                             class="i-mdi-plus-circle-outline calendar-add text-1.5rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
-                            @click="" />
+                            :data-date="index1" @click="handleAdd($event)" />
                     </div>
                 </div>
             </div>
-            <LeaveForm></LeaveForm>
+            <LeaveForm :refresh="refresh"></LeaveForm>
         </template>
     </NuxtLayout>
 </template>
@@ -102,12 +101,12 @@ const nuxtApp = useNuxtApp();
 const now = ref(nuxtApp.$dayjs(new Date()));
 
 // fetch and render
-const { data, error } = await useFetch("/api/leave", {
+const { data, error, refresh } = await useFetch("/api/leave", {
     method: "POST",
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
 });
 
-console.log(data.value)
+// console.log(data.value)
 
 if (error.value) {
     navigateTo('/login');
@@ -141,33 +140,67 @@ const handlePage = async (action: string) => {
 
 // leave CRUD
 const leaveFormStore = useLeaveFormStore();
-const { set, canEdit, canSubmit, switchMode, toggle } = leaveFormStore;
+const { set, setStash, canEdit, canSubmit, switchMode, toggle } = leaveFormStore;
 // const { show, mode, editable, submitable } = storeToRefs(leaveFormStore);
 
-const handleInfo = async (event: any) => {
+const handleInfo = async (event: Event) => {
 
-    const dateIndex = event.target.getAttribute('data-date');
-    const eventIndex = event.target.getAttribute('data-event');
-    const { id, date, member_id, type, start, end, description, hours, member } = data.value.dates[dateIndex].events[eventIndex];
-    console.log(data.value.dates[dateIndex].events[eventIndex]);
-    // loading.value = true;
+    const target = event.target as HTMLElement;
+    const dateIndex = target.getAttribute('data-date');
+    const eventIndex = target.getAttribute('data-event');
+    const { id, member_id, type, start, end, description, hours, member } = data.value.dates[dateIndex!].events[eventIndex!];
+    const { date } = data.value.dates[dateIndex!];
+    const holidays = data.value.holidays;
 
-    // const year = now.value.format('YYYY');
-    // const month = now.value.format('MM');
+    console.log(data.value.dates[dateIndex!]);
+    const formData: LeaveFormData = {
+        id: id,
+        // date: date,
+        member_id: member_id,
+        type: type,
+        start: start,
+        end: end,
+        description: description,
+        hours: hours,
+        member: member,
+        holidays: holidays,
+    }
 
-    // const { data: response, error } = await useFetch(`/api/leave`, {
-    //     method: "POST",
-    //     headers: useRequestHeaders(['cookie']) as Record<string, string>,
-    //     query: { y: year, m: month },
-    // });
-
-    // loading.value = false;
-
-    // if (error.value) {
-    //     navigateTo('/login');
-    // }
-
-    // data.value = response.value;
+    toggle(true);
+    set(formData);
+    setStash(formData);
+    canEdit(false);
+    canSubmit(false);
+    switchMode('read');
 }
 
+const handleAdd = async (event: Event) => {
+    const target = event.target as HTMLElement;
+    const dateIndex = target.getAttribute('data-date');
+    const holidays = data.value.holidays;
+    const { date } = data.value.dates[dateIndex!];
+    set({
+        date: date,
+        holidays: holidays,
+        start: date + ' 09:00:00',
+        end: date + ' 18:00:00',
+    });
+    setStash({});
+    toggle(true);
+    canEdit(true);
+    canSubmit(false);
+    switchMode('create');
+}
+
+const convertMap = {
+    annual: '特休',
+    comp: '補休',
+    personal: '事假',
+    offical: '公假',
+    marriage: '婚假',
+    funeral: '喪假',
+    menstrul: '生理假',
+    maternity: '產假',
+    paternity: '陪產假',
+}
 </script>
