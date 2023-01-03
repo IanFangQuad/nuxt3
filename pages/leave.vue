@@ -34,7 +34,10 @@
 ]">
                         <div class="w-100% flex">
                             <div class="mx-1.5 my-0.75" :class="[]">
-                                {{ $dayjs(day.date).format('DD') }}</div>
+                                {{ ($dayjs(day.date).format('YYYY-MM-DD') == $dayjs(new Date()).format('YYYY-MM-DD')) ?
+        'Today' : $dayjs(day.date).format('DD')
+}}
+                            </div>
                             <div class="p-0 whitespace-nowrap flex flex-grow justify-center items-center calendar-annotation"
                                 :class="[day.dayoff ? 'text-red-6' : 'text-dark-3', ($dayjs(day.date).format('MM') == now.format('MM')) ? '' : 'text-op-50']">
                                 {{ day.annotation }}
@@ -68,7 +71,7 @@
                                         :data-date="index1" :data-event="index2" @click="handleInfo($event)" />
                                     <div title="delete"
                                         class="i-mdi-delete-outline text-1.25rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
-                                        @click="" />
+                                        :data-date="index1" :data-event="index2" @click="handleDelete($event)" />
                                     <div title="approve"
                                         class="i-mdi-checkbox-marked-circle-outline text-1.25rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
                                         @click="" />
@@ -82,6 +85,7 @@
                 </div>
             </div>
             <LeaveForm :refresh="refresh"></LeaveForm>
+            <Modal />
         </template>
     </NuxtLayout>
 </template>
@@ -92,6 +96,7 @@
 
 <script setup lang="ts">
 import { useLeaveFormStore } from "~~/stores/leaveForm";
+import { useModalStore } from "~~/stores/modal";
 import { storeToRefs } from 'pinia';
 
 definePageMeta({
@@ -101,7 +106,7 @@ const nuxtApp = useNuxtApp();
 const now = ref(nuxtApp.$dayjs(new Date()));
 
 // fetch and render
-const { data, error, refresh } = await useFetch("/api/leave", {
+const { data, error, refresh } = await useFetch("/api/leave/show", {
     method: "POST",
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
 });
@@ -123,7 +128,7 @@ const handlePage = async (action: string) => {
     const year = now.value.format('YYYY');
     const month = now.value.format('MM');
 
-    const { data: response, error } = await useFetch(`/api/leave`, {
+    const { data: response, error } = await useFetch(`/api/leave/show`, {
         method: "POST",
         headers: useRequestHeaders(['cookie']) as Record<string, string>,
         query: { y: year, m: month },
@@ -141,6 +146,8 @@ const handlePage = async (action: string) => {
 // leave CRUD
 const leaveFormStore = useLeaveFormStore();
 const { set, setStash, canEdit, canSubmit, switchMode, toggle } = leaveFormStore;
+const modalStore = useModalStore();
+const { toggle: modalToggle, set: modalSet } = modalStore;
 // const { show, mode, editable, submitable } = storeToRefs(leaveFormStore);
 
 const handleInfo = async (event: Event) => {
@@ -152,7 +159,7 @@ const handleInfo = async (event: Event) => {
     const { date } = data.value.dates[dateIndex!];
     const holidays = data.value.holidays;
 
-    console.log(data.value.dates[dateIndex!]);
+    //console.log(data.value.dates[dateIndex!]);
     const formData: LeaveFormData = {
         id: id,
         // date: date,
@@ -192,6 +199,42 @@ const handleAdd = async (event: Event) => {
     switchMode('create');
 }
 
+const handleDelete = async (event: Event) => {
+    const target = event.target as HTMLElement;
+    const dateIndex = target.getAttribute('data-date');
+    const eventIndex = target.getAttribute('data-event');
+    const { id } = data.value.dates[dateIndex!].events[eventIndex!];
+
+    const destrioy = async () => {
+        loading.value = true;
+
+        const { data: response, error } = await useFetch(`/api/leave/delete`, {
+            method: "POST",
+            headers: useRequestHeaders(['cookie']) as Record<string, string>,
+            body: { id: id },
+        });
+
+        if (error.value) {
+            modalToggle();
+            navigateTo('/login');
+        }
+
+        await refresh();
+        modalToggle();
+        loading.value = false;
+    };
+
+    modalSet({
+        title: 'system message',
+        content: 'Want to delete this leave ?',
+        danger_btn_show: true,
+        dangerBtnHandler: () => { destrioy() },
+        primary_btn_show: false,
+        secondaryBtnHandler: () => { modalToggle() },
+    });
+    modalToggle();
+}
+
 const convertMap = {
     annual: '特休',
     comp: '補休',
@@ -204,3 +247,4 @@ const convertMap = {
     paternity: '陪產假',
 }
 </script>
+Do you sure

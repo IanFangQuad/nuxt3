@@ -24,18 +24,18 @@
                                 <p class="text-white mx-1 my-2"><b>{{ options.primary_btn_text }}</b></p>
                             </div>
                         </button>
-                        <button class="bg-slate-4 shadow b-rounded items-center max-w-md cursor-pointer b-none"
-                            v-bind:class="options.secondary_btn_show ? 'flex' : 'hidden'" type="button"
-                            hover="shadow-slate bg-op-90" @click="options.secondaryBtnHandler">
-                            <div class="flex items-center justify-center flex-grow">
-                                <p class="text-white mx-1 my-2"><b>{{ options.secondary_btn_text }}</b></p>
-                            </div>
-                        </button>
                         <button class="bg-rose-6 shadow b-rounded items-center max-w-md cursor-pointer b-none"
                             v-bind:class="options.danger_btn_show ? 'flex' : 'hidden'" type="button"
                             hover="shadow-red bg-op-90" @click="options.dangerBtnHandler">
                             <div class="flex items-center justify-center flex-grow">
                                 <p class="text-white mx-1 my-2"><b>{{ options.danger_btn_text }}</b></p>
+                            </div>
+                        </button>
+                        <button class="bg-slate-4 shadow b-rounded items-center max-w-md cursor-pointer b-none"
+                            v-bind:class="options.secondary_btn_show ? 'flex' : 'hidden'" type="button"
+                            hover="shadow-slate bg-op-90" @click="options.secondaryBtnHandler">
+                            <div class="flex items-center justify-center flex-grow">
+                                <p class="text-white mx-1 my-2"><b>{{ options.secondary_btn_text }}</b></p>
                             </div>
                         </button>
                     </div>
