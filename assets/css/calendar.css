@@ -42,6 +42,22 @@
     cursor: pointer;
 }
 
+.calendar-more {
+    /* display: none; */
+    color: #ccc;
+    position: absolute;
+    bottom: 0.2rem;
+    right: 0.2rem;
+    cursor: pointer;
+}
+
+.calendar-top{
+    color: #ccc;
+    position: absolute;
+    bottom: 0.2rem;
+    right: 1.5rem;
+    cursor: pointer;
+}
 .calendar-cell:hover .calendar-add {
     display: block;
 }
@@ -82,7 +98,11 @@
 
 .tag-wrapper {
     overflow: scroll;
-    height: 150px;
+    height: 138px;
+}
+
+.tag-wrapper::-webkit-scrollbar{
+    display: none;
 }
 
 .w-inherit{

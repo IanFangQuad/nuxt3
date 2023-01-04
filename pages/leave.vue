@@ -43,11 +43,10 @@
                                 {{ day.annotation }}
                             </div>
                         </div>
-                        <div v-for="event, index2 in day.events" :key="index1 + '-' + event.id"
-                            :ref="index1 + '-' + event.id" class="tag-wrapper">
-
-                            <div
-                                class="border-dashed border-1 border-gray-4 rounded event-tag my-2 mx-2 px-1 hover:border-solid position-relative">
+                        <div class="tag-wrapper" ref="tagwapper">
+                            <div v-for="event, index2 in day.events" :key="index1 + '-' + event.id"
+                                :ref="index1 + '-' + event.id"
+                                class="border-dashed border-1 border-gray-4 rounded event-tag my-2 mb-2.5 mx-2 px-1 hover:border-solid position-relative">
                                 <div class="flex items-baseline my-1.25 flex-wrap">
                                     <div class="p-0 ml-1 fw-bold text-dark-1 text-0.9rem">
                                         {{ event.member.name }}
@@ -59,7 +58,7 @@
                                     </div>
                                 </div>
 
-                                <div class="text-dark-1 p-0 mx-1 mb-1.25 text-0.8rem">{{ event.description }}</div>
+                                <div class="text-dark-1 p-0 mx-1 mb-1.25 text-0.5rem">{{ event.description }}</div>
 
                                 <span
                                     class="text-white fw-bold text-0.5rem mx-1 mb-1 rounded bg-rose-5 px-1 position-absolute right--0.5rem top--0.5rem"
@@ -81,6 +80,14 @@
                         <div title="add"
                             class="i-mdi-plus-circle-outline calendar-add text-1.5rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
                             :data-date="index1" @click="handleAdd($event)" />
+                        <div title="scroll top"
+                            class="i-mdi-arrow-up-circle calendar-top text-1.25rem cursor-pointer shadow hover:bg-sky-5 shadow-blue"
+                            :class="[day.events.length >= 2 ? '' : 'hidden']" :data-date="index1"
+                            @click="handleScrollTop($event)" />
+                        <div title="scroll down"
+                            class="i-mdi-arrow-down-circle calendar-more text-1.25rem cursor-pointer shadow hover:bg-sky-5 shadow-blue"
+                            :class="[day.events.length >= 2 ? '' : 'hidden']" :data-date="index1"
+                            @click="handleScrollDown($event)" />
                     </div>
                 </div>
             </div>
@@ -141,6 +148,27 @@ const handlePage = async (action: string) => {
     }
 
     data.value = response.value;
+}
+
+// scroll button
+const tagwapper = ref<HTMLInputElement[] | null>(null);
+
+const handleScrollDown = (event: Event) => {
+
+    const target = event.target as HTMLElement;
+    const dateIndex = +target.getAttribute('data-date')! as number;
+
+    tagwapper.value![dateIndex].scrollBy({ top: 50, behavior: 'smooth' });
+
+}
+
+const handleScrollTop = (event: Event) => {
+
+    const target = event.target as HTMLElement;
+    const dateIndex = +target.getAttribute('data-date')! as number;
+
+    tagwapper.value![dateIndex].scrollTo({ top: 0, behavior: 'smooth' });
+
 }
 
 // leave CRUD
