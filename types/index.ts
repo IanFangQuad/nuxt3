@@ -10,6 +10,7 @@ declare global {
         third_party?: string;
         third_party_id?: string;
         id?: bigint;
+        type?:string;
     }
 
     interface AuthResponse {

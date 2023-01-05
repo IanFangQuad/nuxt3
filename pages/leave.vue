@@ -61,8 +61,10 @@
                                 <div class="text-dark-1 p-0 mx-1 mb-1.25 text-0.5rem">{{ event.description }}</div>
 
                                 <span
-                                    class="text-white fw-bold text-0.5rem mx-1 mb-1 rounded bg-rose-5 px-1 position-absolute right--0.5rem top--0.5rem"
-                                    :class="[event.approval ? 'hidden' : '']">reviewing</span>
+                                    class="text-white fw-bold text-0.5rem mx-1 mb-1 rounded px-1 position-absolute right--0.5rem top--0.5rem"
+                                    :class="[event.approval ? 'bg-green-5' : 'bg-rose-5']">
+                                    {{ event.approval ? 'approved' : 'reviewing' }}
+                                </span>
 
                                 <div class="tag-tool justify-around my-1">
                                     <div title="information"
@@ -73,13 +75,17 @@
                                         :data-date="index1" :data-event="index2" @click="handleDelete($event)" />
                                     <div title="approve"
                                         class="i-mdi-checkbox-marked-circle-outline text-1.25rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
-                                        @click="" />
+                                        :class="[info.type == 'admin' ? '' : 'hidden']" :data-date="index1"
+                                        :data-event="index2" @click="handleApprove($event)" />
                                 </div>
                             </div>
+
+                            <div title="add"
+                                class="i-mdi-plus-circle-outline calendar-add text-1.5rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
+                                :class="[($dayjs().diff(day.date, 'day') > 0) && (info.type !== 'admin') ? 'hidden!' : '']"
+                                :data-date="index1" @click="handleAdd($event)" />
                         </div>
-                        <div title="add"
-                            class="i-mdi-plus-circle-outline calendar-add text-1.5rem text-sky-6 cursor-pointer shadow hover:bg-sky-5 shadow-blue"
-                            :data-date="index1" @click="handleAdd($event)" />
+
                         <div title="scroll top"
                             class="i-mdi-arrow-up-circle calendar-top text-1.25rem cursor-pointer shadow hover:bg-sky-5 shadow-blue"
                             :class="[day.events.length >= 2 ? '' : 'hidden']" :data-date="index1"
@@ -104,11 +110,16 @@
 <script setup lang="ts">
 import { useLeaveFormStore } from "~~/stores/leaveForm";
 import { useModalStore } from "~~/stores/modal";
+import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from 'pinia';
 
 definePageMeta({
     middleware: ['auth'],
 })
+
+const userStore = useUserStore();
+const { info } = storeToRefs(userStore);
+
 const nuxtApp = useNuxtApp();
 const now = ref(nuxtApp.$dayjs(new Date()));
 
@@ -118,7 +129,7 @@ const { data, error, refresh } = await useFetch("/api/leave/show", {
     headers: useRequestHeaders(['cookie']) as Record<string, string>,
 });
 
-// console.log(data.value)
+//console.log(data.value)
 
 if (error.value) {
     navigateTo('/login');
@@ -183,11 +194,11 @@ const handleInfo = async (event: Event) => {
     const target = event.target as HTMLElement;
     const dateIndex = target.getAttribute('data-date');
     const eventIndex = target.getAttribute('data-event');
-    const { id, member_id, type, start, end, description, hours, member } = data.value.dates[dateIndex!].events[eventIndex!];
+    const { id, member_id, type, start, end, description, hours, member, approval } = data.value.dates[dateIndex!].events[eventIndex!];
     const { date } = data.value.dates[dateIndex!];
     const holidays = data.value.holidays;
 
-    //console.log(data.value.dates[dateIndex!]);
+    console.log(data.value.dates[dateIndex!]);
     const formData: LeaveFormData = {
         id: id,
         // date: date,
@@ -199,6 +210,7 @@ const handleInfo = async (event: Event) => {
         hours: hours,
         member: member,
         holidays: holidays,
+        approval: approval,
     }
 
     toggle(true);
@@ -263,6 +275,43 @@ const handleDelete = async (event: Event) => {
     modalToggle();
 }
 
+const handleApprove = async (event: Event) => {
+    const target = event.target as HTMLElement;
+    const dateIndex = target.getAttribute('data-date');
+    const eventIndex = target.getAttribute('data-event');
+    const { id } = data.value.dates[dateIndex!].events[eventIndex!];
+
+    const approve = async () => {
+        loading.value = true;
+
+        const { data: response, error } = await useFetch(`/api/leave/approve`, {
+            method: "POST",
+            headers: useRequestHeaders(['cookie']) as Record<string, string>,
+            body: { id: id },
+        });
+
+        if (error.value) {
+            modalToggle();
+            navigateTo('/login');
+        }
+
+        await refresh();
+        modalToggle();
+        loading.value = false;
+    };
+
+    modalSet({
+        title: 'system message',
+        content: 'approve this leave ?',
+        danger_btn_show: true,
+        dangerBtnHandler: () => { approve() },
+        primary_btn_show: false,
+        secondaryBtnHandler: () => { modalToggle() },
+    });
+    modalToggle();
+
+}
+
 const convertMap = {
     annual: '特休',
     comp: '補休',
@@ -275,4 +324,3 @@ const convertMap = {
     paternity: '陪產假',
 }
 </script>
-Do you sure
