@@ -62,7 +62,7 @@
 
                                 <span
                                     class="text-white fw-bold text-0.5rem mx-1 mb-1 rounded px-1 position-absolute right--0.5rem top--0.5rem"
-                                    :class="[event.approval ? 'bg-green-5' : 'bg-rose-5']">
+                                    :class="[event.approval ? 'bg-green-6' : 'bg-rose-5']">
                                     {{ event.approval ? 'approved' : 'reviewing' }}
                                 </span>
 
